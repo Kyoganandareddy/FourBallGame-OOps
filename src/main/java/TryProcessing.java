@@ -1,10 +1,10 @@
 import processing.core.PApplet;
+import java.util.ArrayList;
 
 public class TryProcessing extends PApplet {
-    public final int HEIGHT = 750;
-    public final int WIDTH = 1000;
-    public final int DAIMETER =10;
-    int x1=0,x2=0,x3=0,x4=0;
+    private final int HEIGHT = 750;
+    private final int WIDTH = 1000;
+    private ArrayList<Ball> balls;
     public static void main(String args[])
     {
         PApplet.main("TryProcessing",args);
@@ -17,15 +17,34 @@ public class TryProcessing extends PApplet {
     }
 
     @Override
+    public void setup() {
+        balls=new ArrayList<>();
+        balls.add(new Ball(0,HEIGHT/5,10,1));
+        balls.add(new Ball(0,(2*HEIGHT)/5,10,2));
+        balls.add(new Ball(0,(3*HEIGHT)/5,10,3));
+        balls.add(new Ball(0,(4*HEIGHT)/5,10,4));
+    }
+
+    @Override
     public void draw()
     {
-        ellipse(x1,HEIGHT/5,DAIMETER,DAIMETER);
-        ellipse(x2,(2*HEIGHT)/5,DAIMETER,DAIMETER);
-        ellipse(x3,(3*HEIGHT)/5,DAIMETER,DAIMETER);
-        ellipse(x4,(4*HEIGHT)/5,DAIMETER,DAIMETER);
-        x1++;
-        x2+=2;
-        x3+=3;
-        x4+=4;
+        drawBalls();
+    }
+    private void drawBalls()
+    {
+        for(int iterator=0;iterator<balls.size();iterator++)
+        {
+            Ball currentBall=balls.get(iterator);
+            drawEllipse(currentBall);
+            int currentSpeedRate=currentBall.getSpeedRate();
+            incrementX(currentBall,currentSpeedRate);
+        }
+    }
+    private void incrementX(Ball currentBall,int currentSpeedRate) {
+        currentBall.setxCordinate(currentBall.getxCordinate()+currentSpeedRate);
+    }
+
+    private void drawEllipse(Ball currentBall) {
+        ellipse(currentBall.getxCordinate(),currentBall.getyCordinate(),currentBall.getDaimeter(),currentBall.getDaimeter());
     }
 }
